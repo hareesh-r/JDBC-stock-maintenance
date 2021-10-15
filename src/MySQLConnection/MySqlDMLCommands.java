@@ -97,24 +97,62 @@ public class MySqlDMLCommands {
         }
     }
 
+    public static class Product{
+
+        String connectionName,connectionPassword;
+
+        Product(String connectionName,String connectionPassword){
+            this.connectionName = connectionName;
+            this.connectionPassword = connectionPassword;
+        }
+        private void add(int id,String productname,int price,String location) throws SQLException {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock", connectionName, connectionPassword);
+            Statement stmt = con.createStatement();
+            String insert = "INSERT INTO PRODUCT VALUES("+id+",'"+productname+"',"+price+",'"+location+"')";
+            stmt.execute(insert);
+            con.close();
+            System.out.println("Successfully Inserted product data with id:"+id);
+        }
+        private void update(int id,String productname,int price,String location) throws SQLException {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock", connectionName, connectionPassword);
+            Statement stmt = con.createStatement();
+            String update = "UPDATE PRODUCT SET PRODUCTNAME='"+productname+"' ,price="+price+" ,location='"+location+"' WHERE productid="+id;
+            stmt.execute(update);
+            con.close();
+            System.out.println("Successfully Updated product data with id:"+id);
+        }
+        private void delete(int id) throws SQLException {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock", connectionName, connectionPassword);
+            Statement stmt = con.createStatement();
+            String update = "DELETE FROM PRODUCT WHERE PRODUCTID="+id;
+            stmt.execute(update);
+            con.close();
+            System.out.println("Successfully Deleted product data with id:"+id);
+        }
+    }
+
 
     public static void main(String[] args) throws SQLException {
         String connectionName = "root";
         String connectionPassword = "password";
 
-//        Customer cust = new Customer(connectionName,connectionPassword);
-//        cust.insert(7,"Hareesh Jr","Somewhere under the sky","9988776655","customer");
-//        cust.update(5,"Hareesh Sr","Somewhere under the sky","9988776655","customer");
-//        cust.delete(5,"customer");
-//        cust.display("customer");
+        Customer cust = new Customer(connectionName,connectionPassword);
+        cust.insert(7,"Hareesh Jr","Somewhere under the sky","9988776655","customer");
+        cust.update(5,"Hareesh Sr","Somewhere under the sky","9988776655","customer");
+        cust.delete(5,"customer");
+        cust.display("customer");
 
 
         Order order = new Order(connectionName,connectionPassword);
-//        order.place(4,4,"Bottles");
-//        order.place(5,3,"Phones");
-//        order.place(6,7,"Laptops");
-//        order.cancel(4);
+        order.place(4,4,"Bottles");
+        order.place(5,3,"Phones");
+        order.place(6,7,"Laptops");
+        order.cancel(4);
         order.display();
 
+        Product product = new Product(connectionName,connectionPassword);
+        product.add(2,"Bag",1000,"Chennai");
+        product.update(2,"Bags",1100,"Chennai");
+        product.delete(2);
     }
 }
