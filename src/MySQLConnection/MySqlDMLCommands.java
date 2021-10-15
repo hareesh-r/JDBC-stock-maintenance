@@ -79,6 +79,22 @@ public class MySqlDMLCommands {
             con.close();
             System.out.println("Order cancelled Successfully with order id:"+orderid+"...");
         }
+        private void display() throws SQLException {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock", connectionName, connectionPassword);
+            Statement stmt = con.createStatement();
+            String display = "SELECT * FROM stock.order";
+            ResultSet res = stmt.executeQuery(display);
+
+            while(res.next()){
+                int orderid = res.getInt("orderid");
+                int quantity = res.getInt("quantity");
+                String item = res.getString("item");
+
+                System.out.println(orderid+"\t"+quantity+"\t"+item);
+            }
+            con.close();
+            System.out.println("Data of all orders retrieved Successful...");
+        }
     }
 
 
@@ -86,18 +102,19 @@ public class MySqlDMLCommands {
         String connectionName = "root";
         String connectionPassword = "password";
 
-        Customer cust = new Customer(connectionName,connectionPassword);
-        cust.insert(7,"Hareesh Jr","Somewhere under the sky","9988776655","customer");
-        cust.update(5,"Hareesh Sr","Somewhere under the sky","9988776655","customer");
-        cust.delete(5,"customer");
-        cust.display("customer");
+//        Customer cust = new Customer(connectionName,connectionPassword);
+//        cust.insert(7,"Hareesh Jr","Somewhere under the sky","9988776655","customer");
+//        cust.update(5,"Hareesh Sr","Somewhere under the sky","9988776655","customer");
+//        cust.delete(5,"customer");
+//        cust.display("customer");
 
 
         Order order = new Order(connectionName,connectionPassword);
-        order.place(4,4,"Bottles");
-        order.place(5,3,"Phones");
-        order.place(6,7,"Laptops");
-        order.cancel(4);
+//        order.place(4,4,"Bottles");
+//        order.place(5,3,"Phones");
+//        order.place(6,7,"Laptops");
+//        order.cancel(4);
+        order.display();
 
     }
 }
