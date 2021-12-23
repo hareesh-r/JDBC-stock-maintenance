@@ -6,6 +6,14 @@ import java.sql.*;
 
 public class MySqlDMLCommands implements ActionListener{
 
+    private static final String connectionName = "root";
+    private static final String connectionPassword = "password";
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+
     public static class Customer {
 
         String connectionName,connectionPassword;
@@ -149,6 +157,7 @@ public class MySqlDMLCommands implements ActionListener{
     }
 
     public static void manageProduct(){
+
         frame.remove(panel);
 
         adminPanel = new JPanel();
@@ -160,31 +169,90 @@ public class MySqlDMLCommands implements ActionListener{
 
         addRadio=new JRadioButton("Add");
         addRadio.setBounds(10,50,100,30);
+
         updateRadio=new JRadioButton("Update");
         updateRadio.setBounds(10,80,100,30);
+
         deleteRadio=new JRadioButton("Delete");
         deleteRadio.setBounds(10,110,100,30);
+
+        currId = new JLabel("Enter Id");
+        currId.setBounds(130,50,150,30);
+
+        currIdFeild = new JTextField(100);
+        currIdFeild.setBounds(280,50,150,30);
+        adminPanel.add(currIdFeild);
+
+        currName = new JLabel("Enter Name");
+        currName.setBounds(130,80,150,30);
+
+        currNameFeild = new JTextField(100);
+        currNameFeild.setBounds(280,80,150,30);
+        adminPanel.add(currNameFeild);
+
+        currAddress = new JLabel("Enter Address");
+        currAddress.setBounds(130,110,150,30);
+
+        currAddressFeild = new JTextField(100);
+        currAddressFeild.setBounds(280,110,150,30);
+        adminPanel.add(currAddressFeild);
+
+        currPhno = new JLabel("Enter Phone Number");
+        currPhno.setBounds(130,140,150,30);
+
+        currPhnoFeild = new JTextField(100);
+        currPhnoFeild.setBounds(280,140,150,30);
+        adminPanel.add(currPhnoFeild);
+
         ButtonGroup bg=new ButtonGroup();
         bg.add(addRadio);
         bg.add(updateRadio);
         bg.add(deleteRadio);
+
         executeOption=new JButton("Execute !");
-        executeOption.setBounds(100,150,180,30);
+        executeOption.setBounds(100,250,180,30);
         executeOption.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                currIdValue = Integer.valueOf(currIdFeild.getText());
+                currNameValue = currNameFeild.getText();
+                currAddressValue = currAddressFeild.getText();
+                currPhnoValue = currPhnoFeild.getText();
+
                 if(addRadio.isSelected()){
-                    // add
-                    System.out.println("Add!");
+                    Customer customer = new Customer(connectionName,connectionPassword);
+                    try {
+                        customer.insert(currIdValue,currNameValue,currAddressValue,currPhnoValue,"customer");
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                    System.out.println("Added! "+currIdValue+" , "+currNameValue+" , "+currAddressValue+" , "+currPhnoValue );
                 }else if(updateRadio.isSelected()){
-                    // update
-                    System.out.println("Update!");
+                    Customer customer = new Customer(connectionName,connectionPassword);
+                    try {
+                        customer.update(currIdValue,currNameValue,currAddressValue,currPhnoValue,"customer");
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                    System.out.println("Updated! "+currIdValue+" , "+currNameValue+" , "+currAddressValue+" , "+currPhnoValue );
                 }else if(deleteRadio.isSelected()){
-                    // delete
-                    System.out.println("Delete!");
+                    Customer customer = new Customer(connectionName,connectionPassword);
+                    try {
+                        customer.delete(currIdValue,"customer");
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                    System.out.println("Deleted! "+currIdValue+" , "+currNameValue+" , "+currAddressValue+" , "+currPhnoValue );
                 }
             }
         });
+
+
+        adminPanel.add(currId);
+        adminPanel.add(currName);
+        adminPanel.add(currAddress);
+        adminPanel.add(currPhno);
+
         adminPanel.add(addRadio);
         adminPanel.add(updateRadio);
         adminPanel.add(deleteRadio);
@@ -197,17 +265,19 @@ public class MySqlDMLCommands implements ActionListener{
 
     private static JFrame frame;
     private static JPanel panel,adminPanel;
-    private static JLabel userLabel, passwordLabel,successLabel,welcomeAdmin;
-    private static JTextField userName;
+    private static JLabel userLabel, passwordLabel,successLabel,welcomeAdmin,currId,currName,currAddress,currPhno;
+    private static JTextField userName,currIdFeild,currNameFeild,currAddressFeild,currPhnoFeild;
     private static JPasswordField password;
     private static JButton loginButton,executeOption;
     private static JRadioButton addRadio , updateRadio , deleteRadio;
+    private static String currNameValue,currPhnoValue,currAddressValue;
+    private static int currIdValue;
 
     public static void main(String[] args) throws SQLException {
 
         frame = new JFrame("Stock Maintenance");
         panel = new JPanel();
-        frame.setSize(800,500);
+        frame.setSize(470,350);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
 
@@ -239,9 +309,11 @@ public class MySqlDMLCommands implements ActionListener{
                 String passwordText = password.getText();
                 if (usernameText.equals("hareesh") && passwordText.equals("admin")) {
                     successLabel.setText("Admin Logged in!");
+                    System.out.println("Admin Logged in!");
                     manageProduct();
                 } else {
                     successLabel.setText("User Logged in!");
+                    System.out.println("User Logged in!");
 //                    updateUser();
                 }
             }
@@ -254,12 +326,6 @@ public class MySqlDMLCommands implements ActionListener{
 
         frame.setVisible(true);
 
-
-
-
-//        String connectionName = "root";
-//        String connectionPassword = "password";
-//
 //        Customer cust = new Customer(connectionName,connectionPassword);
 //        cust.insert(7,"Hemesh","RMKEC","9988776650","customer");
 //        cust.update(5,"Hareesh Sr","Somewhere under the sky","9988776655","customer");
