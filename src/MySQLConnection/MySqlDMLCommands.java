@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.Random;
 
 public class MySqlDMLCommands implements ActionListener{
 
@@ -78,18 +79,20 @@ public class MySqlDMLCommands implements ActionListener{
     public static class Order {
 
         String connectionName, connectionPassword;
+        Random random = new Random();
+        int randomOrderID = random.nextInt(1000);
 
         Order(String connectionName,String connectionPassword){
              this.connectionName = connectionName;
              this.connectionPassword = connectionPassword;
         }
-        private void place(int orderid,int quantity,String item) throws SQLException {
+        private void place(int quantity,String item) throws SQLException {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock", connectionName, connectionPassword);
             Statement stmt = con.createStatement();
-            String insert = "INSERT INTO stock.order VALUES("+orderid+","+quantity+","+"'"+item+"')";
+            String insert = "INSERT INTO stock.order VALUES("+randomOrderID+","+quantity+","+"'"+item+"')";
             stmt.execute(insert);
             con.close();
-            System.out.println("Order placed Successfully with order id:"+orderid+"...");
+            System.out.println("Order placed Successfully with order id:"+randomOrderID+"...");
         }
         private void cancel(int orderid) throws SQLException {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock", connectionName, connectionPassword);
@@ -167,6 +170,7 @@ public class MySqlDMLCommands implements ActionListener{
     }
 
     public static void updateUser(String userName){
+
         frame.remove(panel);
 
         userPanel = new JPanel();
@@ -260,7 +264,6 @@ public class MySqlDMLCommands implements ActionListener{
             }
         });
 
-
         userPanel.add(currId);
         userPanel.add(currName);
         userPanel.add(currAddress);
@@ -271,12 +274,12 @@ public class MySqlDMLCommands implements ActionListener{
         userPanel.add(deleteRadio);
         userPanel.add(executeOption);
 
-
         frame.add(userPanel);
         frame.setVisible(true);
     }
 
     private static void manageProduct(){
+
         frame.remove(panel);
 
 
@@ -407,6 +410,10 @@ public class MySqlDMLCommands implements ActionListener{
 
         loginButton = new JButton("Login");
         loginButton.setBounds(170,80,90,25);
+
+
+
+
         loginButton.addActionListener(new MySqlDMLCommands());
         loginButton.addActionListener(e -> {
             String usernameText = userName.getText();
@@ -435,11 +442,10 @@ public class MySqlDMLCommands implements ActionListener{
 //        cust.delete(5,"customer");
 //        cust.display("customer");
 //
-//
 //        Order order = new Order(connectionName,connectionPassword);
-//        order.place(4,4,"Bottles");
-//        order.place(5,3,"Phones");
-//        order.place(6,7,"Laptops");
+//        order.place(4,"Bottles");
+//        order.place(3,"Phones");
+//        order.place(7,"Laptops");
 //        order.cancel(4);
 //        order.display();
 //
