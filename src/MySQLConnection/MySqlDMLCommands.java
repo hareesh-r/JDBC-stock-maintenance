@@ -32,34 +32,34 @@ public class MySqlDMLCommands implements ActionListener{
             this.connectionName = connectionName;
             this.connectionPassword = connectionPassword;
         }
-        private void insert(int id,String name,String address,String phno,String table) throws SQLException {
+        private void insert(int id, String name, String address, String phno) throws SQLException {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock", connectionName, connectionPassword);
             Statement stmt = con.createStatement();
-            String insert = "INSERT INTO "+table+" VALUES("+id+",'"+name+"','"+address+"','"+phno+"')";
+            String insert = "INSERT INTO "+ "customer" +" VALUES("+id+",'"+name+"','"+address+"','"+phno+"')";
             stmt.execute(insert);
             con.close();
             System.out.println("Successfully Inserted customer data with id:"+id);
         }
-        private void update(int id,String name,String address,String phno,String table) throws SQLException {
+        private void update(int id, String name, String address, String phno) throws SQLException {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock", connectionName, connectionPassword);
             Statement stmt = con.createStatement();
-            String update = "UPDATE "+table+" SET NAME='"+name+"' ,address='"+address+"' ,phoneno='"+phno+"' WHERE idcustomer="+id;
+            String update = "UPDATE "+ "customer" +" SET NAME='"+name+"' ,address='"+address+"' ,phoneno='"+phno+"' WHERE idcustomer="+id;
             stmt.execute(update);
             con.close();
             System.out.println("Successfully Updated customer data with id:"+id);
         }
-        private void delete(int id,String table) throws SQLException {
+        private void delete(int id) throws SQLException {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock", connectionName, connectionPassword);
             Statement stmt = con.createStatement();
-            String delete = "DELETE FROM "+table+" WHERE idcustomer="+id;
+            String delete = "DELETE FROM "+ "customer" +" WHERE idcustomer="+id;
             stmt.execute(delete);
             con.close();
             System.out.println("Successfully Deleted customer data with id:"+id);
         }
-        private void display(String table) throws SQLException {
+        private void display() throws SQLException {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock", connectionName, connectionPassword);
             Statement stmt = con.createStatement();
-            String display = "SELECT * FROM "+table;
+            String display = "SELECT * FROM "+ "customer";
             ResultSet res = stmt.executeQuery(display);
 
             while(res.next()){
@@ -224,41 +224,38 @@ public class MySqlDMLCommands implements ActionListener{
 
         executeOption=new JButton("Execute !");
         executeOption.setBounds(135,250,180,30);
-        executeOption.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currIdValue = Integer.valueOf(currIdField.getText());
-                currNameValue = currNameField.getText();
-                currAddressValue = currAddressField.getText();
-                currPhnoValue = currPhnoField.getText();
-                Customer customer = new Customer(connectionName,connectionPassword);
-                if(addRadio.isSelected()){
-                    try {
-                        customer.insert(currIdValue,currNameValue,currAddressValue,currPhnoValue,"customer");
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
-                    System.out.println("User Data Added! "+currIdValue+" , "+currNameValue+" , "+currAddressValue+" , "+currPhnoValue );
-                }else if(updateRadio.isSelected()){
-                    try {
-                        customer.update(currIdValue,currNameValue,currAddressValue,currPhnoValue,"customer");
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
-                    System.out.println("User Data Updated! "+currIdValue+" , "+currNameValue+" , "+currAddressValue+" , "+currPhnoValue );
-                }else if(deleteRadio.isSelected()){
-                    try {
-                        customer.delete(currIdValue,"customer");
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
-                    System.out.println("User Data Deleted! "+currIdValue+" , "+currNameValue+" , "+currAddressValue+" , "+currPhnoValue );
-                }else if(displayRadio.isSelected()){
-                    try {
-                        customer.display("customer");
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
+        executeOption.addActionListener(e -> {
+            currIdValue = Integer.valueOf(currIdField.getText());
+            currNameValue = currNameField.getText();
+            currAddressValue = currAddressField.getText();
+            currPhnoValue = currPhnoField.getText();
+            Customer customer = new Customer(connectionName,connectionPassword);
+            if(addRadio.isSelected()){
+                try {
+                    customer.insert(currIdValue,currNameValue,currAddressValue,currPhnoValue);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                System.out.println("User Data Added! "+currIdValue+" , "+currNameValue+" , "+currAddressValue+" , "+currPhnoValue );
+            }else if(updateRadio.isSelected()){
+                try {
+                    customer.update(currIdValue,currNameValue,currAddressValue,currPhnoValue);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                System.out.println("User Data Updated! "+currIdValue+" , "+currNameValue+" , "+currAddressValue+" , "+currPhnoValue );
+            }else if(deleteRadio.isSelected()){
+                try {
+                    customer.delete(currIdValue);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                System.out.println("User Data Deleted! "+currIdValue+" , "+currNameValue+" , "+currAddressValue+" , "+currPhnoValue );
+            }else if(displayRadio.isSelected()){
+                try {
+                    customer.display();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
             }
         });
@@ -335,37 +332,34 @@ public class MySqlDMLCommands implements ActionListener{
 
         executeOption=new JButton("Execute !");
         executeOption.setBounds(135,250,180,30);
-        executeOption.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currIdValue = Integer.valueOf(currIdField.getText());
-                currNameValue = currNameField.getText();
-                currPriveValue = Integer.valueOf(currPriceField.getText());
-                currLocationValue = currLocationField.getText();
-                Product product = new Product(connectionName,connectionPassword);
+        executeOption.addActionListener(e -> {
+            currIdValue = Integer.valueOf(currIdField.getText());
+            currNameValue = currNameField.getText();
+            currPriveValue = Integer.valueOf(currPriceField.getText());
+            currLocationValue = currLocationField.getText();
+            Product product = new Product(connectionName,connectionPassword);
 
-                if(addRadio.isSelected()){
-                    try {
-                        product.add(currIdValue,currNameValue,currPriveValue,currLocationValue);
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
-                    System.out.println("Product Added Successfully! "+currIdValue+" "+currNameValue+" "+currPriveValue+" "+currLocationValue);
-                }else if(updateRadio.isSelected()){
-                    try {
-                        product.update(currIdValue,currNameValue,currPriveValue,currLocationValue);
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
-                    System.out.println("Product Updated Successfully! "+currIdValue+" "+currNameValue+" "+currPriveValue+" "+currLocationValue);
-                }else if(deleteRadio.isSelected()){
-                    try {
-                        product.delete(currIdValue);
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
-                    System.out.println("Product Deleted Successfully! with Id : "+currIdValue);
+            if(addRadio.isSelected()){
+                try {
+                    product.add(currIdValue,currNameValue,currPriveValue,currLocationValue);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
+                System.out.println("Product Added Successfully! "+currIdValue+" "+currNameValue+" "+currPriveValue+" "+currLocationValue);
+            }else if(updateRadio.isSelected()){
+                try {
+                    product.update(currIdValue,currNameValue,currPriveValue,currLocationValue);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                System.out.println("Product Updated Successfully! "+currIdValue+" "+currNameValue+" "+currPriveValue+" "+currLocationValue);
+            }else if(deleteRadio.isSelected()){
+                try {
+                    product.delete(currIdValue);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                System.out.println("Product Deleted Successfully! with Id : "+currIdValue);
             }
         });
 
@@ -413,22 +407,18 @@ public class MySqlDMLCommands implements ActionListener{
 
         loginButton = new JButton("Login");
         loginButton.setBounds(170,80,90,25);
-        loginButton.addActionListener((ActionListener) new MySqlDMLCommands());
-        loginButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String usernameText = userName.getText();
-                String passwordText = password.getText();
-                if (usernameText.equals("hareesh") && passwordText.equals("admin")) {
-                    successLabel.setText("Admin Logged in!");
-                    System.out.println("Admin Logged in!");
-                    manageProduct();
-                } else {
-                    successLabel.setText("User Logged in!");
-                    System.out.println("User Logged in!");
-                    updateUser(usernameText);
-                }
+        loginButton.addActionListener(new MySqlDMLCommands());
+        loginButton.addActionListener(e -> {
+            String usernameText = userName.getText();
+            String passwordText = password.getText();
+            if (usernameText.equals("hareesh") && passwordText.equals("admin")) {
+                successLabel.setText("Admin Logged in!");
+                System.out.println("Admin Logged in!");
+                manageProduct();
+            } else {
+                successLabel.setText("User Logged in!");
+                System.out.println("User Logged in!");
+                updateUser(usernameText);
             }
         });
         panel.add(loginButton);
