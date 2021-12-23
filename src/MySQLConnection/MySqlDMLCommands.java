@@ -148,23 +148,60 @@ public class MySqlDMLCommands implements ActionListener{
 
     }
 
+    public static void manageProduct(){
+        frame.remove(panel);
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String usernameText = userName.getText();
-        String passwordText = password.getText();
-        if(usernameText.equals("hareesh") && passwordText.equals("hareeshtheboss")){
-            successLabel.setText("Admin Logged in!");
-        }else{
-            successLabel.setText("User Logged in!");
-        }
+        adminPanel = new JPanel();
+        adminPanel.setLayout(null);
+
+        welcomeAdmin = new JLabel("Welcome Admin");
+        welcomeAdmin.setBounds(10,20,180,25);
+        adminPanel.add(welcomeAdmin);
+
+        addRadio=new JRadioButton("Add");
+        addRadio.setBounds(10,50,100,30);
+        updateRadio=new JRadioButton("Update");
+        updateRadio.setBounds(10,80,100,30);
+        deleteRadio=new JRadioButton("Delete");
+        deleteRadio.setBounds(10,110,100,30);
+        ButtonGroup bg=new ButtonGroup();
+        bg.add(addRadio);
+        bg.add(updateRadio);
+        bg.add(deleteRadio);
+        executeOption=new JButton("Execute !");
+        executeOption.setBounds(100,150,180,30);
+        executeOption.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(addRadio.isSelected()){
+                    // add
+                    System.out.println("Add!");
+                }else if(updateRadio.isSelected()){
+                    // update
+                    System.out.println("Update!");
+                }else if(deleteRadio.isSelected()){
+                    // delete
+                    System.out.println("Delete!");
+                }
+            }
+        });
+        adminPanel.add(addRadio);
+        adminPanel.add(updateRadio);
+        adminPanel.add(deleteRadio);
+        adminPanel.add(executeOption);
+
+
+        frame.add(adminPanel);
+        frame.setVisible(true);
     }
+
     private static JFrame frame;
-    private static JPanel panel;
-    private static JLabel userLabel, passwordLabel,successLabel;
+    private static JPanel panel,adminPanel;
+    private static JLabel userLabel, passwordLabel,successLabel,welcomeAdmin;
     private static JTextField userName;
     private static JPasswordField password;
-    private static JButton loginButton;
+    private static JButton loginButton,executeOption;
+    private static JRadioButton addRadio , updateRadio , deleteRadio;
 
     public static void main(String[] args) throws SQLException {
 
@@ -172,7 +209,6 @@ public class MySqlDMLCommands implements ActionListener{
         panel = new JPanel();
         frame.setSize(800,500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
         frame.add(panel);
 
         panel.setLayout(null);
@@ -196,11 +232,27 @@ public class MySqlDMLCommands implements ActionListener{
         loginButton = new JButton("Login");
         loginButton.setBounds(170,80,90,25);
         loginButton.addActionListener((ActionListener) new MySqlDMLCommands());
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String usernameText = userName.getText();
+                String passwordText = password.getText();
+                if (usernameText.equals("hareesh") && passwordText.equals("admin")) {
+                    successLabel.setText("Admin Logged in!");
+                    manageProduct();
+                } else {
+                    successLabel.setText("User Logged in!");
+//                    updateUser();
+                }
+            }
+        });
         panel.add(loginButton);
 
         successLabel = new JLabel("");
         successLabel.setBounds(10,100,180,25);
         panel.add(successLabel);
+
+        frame.setVisible(true);
 
 
 
