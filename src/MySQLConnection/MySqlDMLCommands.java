@@ -11,14 +11,14 @@ public class MySqlDMLCommands implements ActionListener{
     private static final String connectionName = "root";
     private static final String connectionPassword = "password";
     private static JFrame frame;
-    private static JPanel panel,userPanel,adminPanel;
-    private static JLabel userLabel, passwordLabel,successLabel,welcomeUser,welcomeAdmin,currId,currName,currAddress,currPhno,currPrice,currLocation;
-    private static JTextField userName, currIdField, currNameField, currAddressField, currPhnoField,currPriceField,currLocationField;
+    private static JPanel panel;
+    private static JLabel currId,successLabel,currName;
+    private static JTextField userName, currIdField, currNameField, currAddressField, currPhoneNumberField,currPriceField,currLocationField;
     private static JPasswordField password;
-    private static JButton loginButton,executeOption;
+    private static JButton executeOption;
     private static JRadioButton addRadio , updateRadio , deleteRadio,displayRadio;
-    private static String currAddressValue,currLocationValue,currPhnoValue,currNameValue;
-    private static Integer currPriveValue,currIdValue;
+    private static String currAddressValue,currLocationValue, currPhoneNumberValue,currNameValue;
+    private static Integer currPriceValue,currIdValue;
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -33,18 +33,18 @@ public class MySqlDMLCommands implements ActionListener{
             this.connectionName = connectionName;
             this.connectionPassword = connectionPassword;
         }
-        private void insert(int id, String name, String address, String phno) throws SQLException {
+        private void insert(int id, String name, String address, String phoneNumber) throws SQLException {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock", connectionName, connectionPassword);
             Statement stmt = con.createStatement();
-            String insert = "INSERT INTO "+ "customer" +" VALUES("+id+",'"+name+"','"+address+"','"+phno+"')";
+            String insert = "INSERT INTO "+ "customer" +" VALUES("+id+",'"+name+"','"+address+"','"+phoneNumber+"')";
             stmt.execute(insert);
             con.close();
             System.out.println("Successfully Inserted customer data with id:"+id);
         }
-        private void update(int id, String name, String address, String phno) throws SQLException {
+        private void update(int id, String name, String address, String phoneNumber) throws SQLException {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock", connectionName, connectionPassword);
             Statement stmt = con.createStatement();
-            String update = "UPDATE "+ "customer" +" SET NAME='"+name+"' ,address='"+address+"' ,phoneno='"+phno+"' WHERE idcustomer="+id;
+            String update = "UPDATE "+ "customer" +" SET NAME='"+name+"' ,address='"+address+"' ,phoneno='"+phoneNumber+"' WHERE idcustomer="+id;
             stmt.execute(update);
             con.close();
             System.out.println("Successfully Updated customer data with id:"+id);
@@ -136,10 +136,10 @@ public class MySqlDMLCommands implements ActionListener{
             con.close();
             System.out.println("Successfully Inserted product data with id:"+id);
         }
-        private void update(int id,String productname,int price,String location) throws SQLException {
+        private void update(int id,String productName,int price,String location) throws SQLException {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock", connectionName, connectionPassword);
             Statement stmt = con.createStatement();
-            String update = "UPDATE PRODUCT SET PRODUCTNAME='"+productname+"' ,price="+price+" ,location='"+location+"' WHERE productid="+id;
+            String update = "UPDATE PRODUCT SET PRODUCTNAME='"+productName+"' ,price="+price+" ,location='"+location+"' WHERE productid="+id;
             stmt.execute(update);
             con.close();
             System.out.println("Successfully Updated product data with id:"+id);
@@ -173,10 +173,10 @@ public class MySqlDMLCommands implements ActionListener{
 
         frame.remove(panel);
 
-        userPanel = new JPanel();
+        JPanel userPanel = new JPanel();
         userPanel.setLayout(null);
 
-        welcomeUser = new JLabel("Welcome "+userName);
+        JLabel welcomeUser = new JLabel("Welcome " + userName);
         welcomeUser.setBounds(10,20,180,25);
         userPanel.add(welcomeUser);
 
@@ -206,19 +206,19 @@ public class MySqlDMLCommands implements ActionListener{
         currNameField.setBounds(280,80,150,30);
         userPanel.add(currNameField);
 
-        currAddress = new JLabel("Enter Address");
+        JLabel currAddress = new JLabel("Enter Address");
         currAddress.setBounds(130,110,150,30);
 
         currAddressField = new JTextField(100);
         currAddressField.setBounds(280,110,150,30);
         userPanel.add(currAddressField);
 
-        currPhno = new JLabel("Enter Phone Number");
+        JLabel currPhno = new JLabel("Enter Phone Number");
         currPhno.setBounds(130,140,150,30);
 
-        currPhnoField = new JTextField(100);
-        currPhnoField.setBounds(280,140,150,30);
-        userPanel.add(currPhnoField);
+        currPhoneNumberField = new JTextField(100);
+        currPhoneNumberField.setBounds(280,140,150,30);
+        userPanel.add(currPhoneNumberField);
 
         ButtonGroup bg=new ButtonGroup();
         bg.add(addRadio);
@@ -232,29 +232,29 @@ public class MySqlDMLCommands implements ActionListener{
             currIdValue = Integer.valueOf(currIdField.getText());
             currNameValue = currNameField.getText();
             currAddressValue = currAddressField.getText();
-            currPhnoValue = currPhnoField.getText();
+            currPhoneNumberValue = currPhoneNumberField.getText();
             Customer customer = new Customer(connectionName,connectionPassword);
             if(addRadio.isSelected()){
                 try {
-                    customer.insert(currIdValue,currNameValue,currAddressValue,currPhnoValue);
+                    customer.insert(currIdValue,currNameValue,currAddressValue, currPhoneNumberValue);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-                System.out.println("User Data Added! "+currIdValue+" , "+currNameValue+" , "+currAddressValue+" , "+currPhnoValue );
+                System.out.println("User Data Added! "+currIdValue+" , "+currNameValue+" , "+currAddressValue+" , "+ currPhoneNumberValue);
             }else if(updateRadio.isSelected()){
                 try {
-                    customer.update(currIdValue,currNameValue,currAddressValue,currPhnoValue);
+                    customer.update(currIdValue,currNameValue,currAddressValue, currPhoneNumberValue);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-                System.out.println("User Data Updated! "+currIdValue+" , "+currNameValue+" , "+currAddressValue+" , "+currPhnoValue );
+                System.out.println("User Data Updated! "+currIdValue+" , "+currNameValue+" , "+currAddressValue+" , "+ currPhoneNumberValue);
             }else if(deleteRadio.isSelected()){
                 try {
                     customer.delete(currIdValue);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-                System.out.println("User Data Deleted! "+currIdValue+" , "+currNameValue+" , "+currAddressValue+" , "+currPhnoValue );
+                System.out.println("User Data Deleted! "+currIdValue+" , "+currNameValue+" , "+currAddressValue+" , "+ currPhoneNumberValue);
             }else if(displayRadio.isSelected()){
                 try {
                     customer.display();
@@ -283,10 +283,10 @@ public class MySqlDMLCommands implements ActionListener{
         frame.remove(panel);
 
 
-        adminPanel = new JPanel();
+        JPanel adminPanel = new JPanel();
         adminPanel.setLayout(null);
 
-        welcomeAdmin = new JLabel("Welcome Admin !");
+        JLabel welcomeAdmin = new JLabel("Welcome Admin !");
         welcomeAdmin.setBounds(10,20,180,25);
         adminPanel.add(welcomeAdmin);
 
@@ -313,14 +313,14 @@ public class MySqlDMLCommands implements ActionListener{
         currNameField.setBounds(280,80,150,30);
         adminPanel.add(currNameField);
 
-        currPrice = new JLabel("Enter Price");
+        JLabel currPrice = new JLabel("Enter Price");
         currPrice.setBounds(130,110,150,30);
 
         currPriceField = new JTextField(100);
         currPriceField.setBounds(280,110,150,30);
         adminPanel.add(currPriceField);
 
-        currLocation = new JLabel("Enter Location");
+        JLabel currLocation = new JLabel("Enter Location");
         currLocation.setBounds(130,140,150,30);
 
         currLocationField = new JTextField(100);
@@ -338,24 +338,24 @@ public class MySqlDMLCommands implements ActionListener{
         executeOption.addActionListener(e -> {
             currIdValue = Integer.valueOf(currIdField.getText());
             currNameValue = currNameField.getText();
-            currPriveValue = Integer.valueOf(currPriceField.getText());
+            currPriceValue = Integer.valueOf(currPriceField.getText());
             currLocationValue = currLocationField.getText();
             Product product = new Product(connectionName,connectionPassword);
 
             if(addRadio.isSelected()){
                 try {
-                    product.add(currIdValue,currNameValue,currPriveValue,currLocationValue);
+                    product.add(currIdValue,currNameValue, currPriceValue,currLocationValue);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-                System.out.println("Product Added Successfully! "+currIdValue+" "+currNameValue+" "+currPriveValue+" "+currLocationValue);
+                System.out.println("Product Added Successfully! "+currIdValue+" "+currNameValue+" "+ currPriceValue +" "+currLocationValue);
             }else if(updateRadio.isSelected()){
                 try {
-                    product.update(currIdValue,currNameValue,currPriveValue,currLocationValue);
+                    product.update(currIdValue,currNameValue, currPriceValue,currLocationValue);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-                System.out.println("Product Updated Successfully! "+currIdValue+" "+currNameValue+" "+currPriveValue+" "+currLocationValue);
+                System.out.println("Product Updated Successfully! "+currIdValue+" "+currNameValue+" "+ currPriceValue +" "+currLocationValue);
             }else if(deleteRadio.isSelected()){
                 try {
                     product.delete(currIdValue);
@@ -392,7 +392,7 @@ public class MySqlDMLCommands implements ActionListener{
 
         panel.setLayout(null);
 
-        userLabel = new JLabel("Username");
+        JLabel userLabel = new JLabel("Username");
         userLabel.setBounds(10,20,80,25);
         panel.add(userLabel);
 
@@ -400,7 +400,7 @@ public class MySqlDMLCommands implements ActionListener{
         userName.setBounds(100,20,160,25);
         panel.add(userName);
 
-        passwordLabel = new JLabel("Password");
+        JLabel passwordLabel = new JLabel("Password");
         passwordLabel.setBounds(10,50,80,25);
         panel.add(passwordLabel);
 
@@ -408,11 +408,8 @@ public class MySqlDMLCommands implements ActionListener{
         password.setBounds(100,50,160,25);
         panel.add(password);
 
-        loginButton = new JButton("Login");
+        JButton loginButton = new JButton("Login");
         loginButton.setBounds(170,80,90,25);
-
-
-
 
         loginButton.addActionListener(new MySqlDMLCommands());
         loginButton.addActionListener(e -> {
@@ -436,22 +433,12 @@ public class MySqlDMLCommands implements ActionListener{
 
         frame.setVisible(true);
 
-//        Customer cust = new Customer(connectionName,connectionPassword);
-//        cust.insert(7,"Hemesh","RMKEC","9988776650","customer");
-//        cust.update(5,"Hareesh Sr","Somewhere under the sky","9988776655","customer");
-//        cust.delete(5,"customer");
-//        cust.display("customer");
-//
 //        Order order = new Order(connectionName,connectionPassword);
 //        order.place(4,"Bottles");
 //        order.place(3,"Phones");
 //        order.place(7,"Laptops");
 //        order.cancel(4);
 //        order.display();
-//
-//        Product product = new Product(connectionName,connectionPassword);
-//        product.add(2,"Bag",1000,"Chennai");
-//        product.update(2,"Bags",1100,"Chennai");
-//        product.delete(2);
+
     }
 }
