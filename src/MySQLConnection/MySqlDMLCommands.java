@@ -8,7 +8,13 @@ import java.util.Random;
 
 public class MySqlDMLCommands implements ActionListener{
 
-    // Globals
+    /**
+     * <h1>Globals</h1>
+     * The Necessary Globals are declared here
+     * @author  Hareesh Rajendran
+     * @version 1.0
+     * @since   2021-12-23
+     */
     private static final String connectionName = "root";
     private static final String connectionPassword = "password";
     private static JFrame frame;
@@ -26,6 +32,19 @@ public class MySqlDMLCommands implements ActionListener{
     public void actionPerformed(ActionEvent e) {
 
     }
+
+    /**
+     * <h1>Backend</h1>
+     * The Backend Starts Here
+     * <p>
+     * Customer , Product and Order are used
+     * to communicate with Database and make modifications
+     *
+     *
+     * @author  Hareesh Rajendran
+     * @version 1.0
+     * @since   2021-12-23
+     */
 
     public static class Customer {
 
@@ -155,6 +174,15 @@ public class MySqlDMLCommands implements ActionListener{
             System.out.println("Successfully Deleted product data with id:"+id);
         }
     }
+
+    /**
+     * <h1>Frontend</h1>
+     * Frontend Built with Java Swing and AWT
+     * Dark theme is maintained throughout with Green Accent
+     * @author  Hareesh Rajendran
+     * @version 1.0
+     * @since   2021-12-23
+     */
 
     public static void updateUser(String userName){
 
@@ -532,6 +560,7 @@ public class MySqlDMLCommands implements ActionListener{
         executeOption.setForeground(black);
         executeOption.setFocusPainted(false);
         executeOption.addActionListener(e -> {
+
             currIdValue = Integer.valueOf(currIdField.getText());
             currNameValue = currNameField.getText();
             currQuantityValue = Integer.valueOf(currQuantityField.getText());
@@ -564,7 +593,6 @@ public class MySqlDMLCommands implements ActionListener{
         orderPanel.add(currName);
         orderPanel.add(currQuantity);
 
-
         orderPanel.add(placeRadio);
         orderPanel.add(cancelRadio);
         orderPanel.add(displayRadio);
@@ -574,13 +602,24 @@ public class MySqlDMLCommands implements ActionListener{
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) throws SQLException {
+    /**
+     * <h1>Stock Maintenance</h1>
+     * The program starts Here and the frontend
+     * gets initialized here and the frontend tels to invoke the backend
+     * @author  Hareesh Rajendran
+     * @version 1.0
+     * @since   2021-12-23
+     */
+
+    public static void main(String[] args) {
 
         frame = new JFrame("Stock Maintenance");
         panel = new JPanel();
         frame.setSize(470,350);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         ImageIcon img = new ImageIcon("src/img/logo.png");
+
         frame.setIconImage(img.getImage());
         frame.add(panel);
         panel.setBackground(black);
@@ -612,8 +651,9 @@ public class MySqlDMLCommands implements ActionListener{
 
         loginButton.addActionListener(new MySqlDMLCommands());
         loginButton.addActionListener(e -> {
+
             String usernameText = userName.getText();
-            String passwordText = password.getText();
+            String passwordText = String.valueOf(password.getPassword());
             if (usernameText.equals("hareesh") && passwordText.equals("admin")) {
                 System.out.println("Admin Logged in!");
                 manageProduct();
@@ -621,7 +661,9 @@ public class MySqlDMLCommands implements ActionListener{
                 System.out.println("User Logged in!");
                 orderOrUpdateProfile(usernameText);
             }
+
         });
+
         panel.add(loginButton);
         frame.setVisible(true);
     }
