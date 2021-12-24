@@ -11,8 +11,6 @@ public class MySqlDMLCommands implements ActionListener{
     /**
      * <h1>Globals</h1>
      * The Necessary Globals are declared here
-     * @author  Hareesh Rajendran
-     * @version 1.0
      * @since   2021-12-23
      */
     private static final String connectionName = "root";
@@ -180,7 +178,6 @@ public class MySqlDMLCommands implements ActionListener{
      * Frontend Built with Java Swing and AWT
      * Dark theme is maintained throughout with Green Accent
      * @author  Hareesh Rajendran
-     * @version 1.0
      * @since   2021-12-23
      */
 
@@ -611,7 +608,6 @@ public class MySqlDMLCommands implements ActionListener{
      * The program starts Here and the frontend
      * gets initialized here and the frontend tels to invoke the backend
      * @author  Hareesh Rajendran
-     * @version 1.0
      * @since   2021-12-23
      */
 
