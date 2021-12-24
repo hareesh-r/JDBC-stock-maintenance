@@ -11,14 +11,14 @@ public class MySqlDMLCommands implements ActionListener{
     private static final String connectionName = "root";
     private static final String connectionPassword = "password";
     private static JFrame frame;
-    private static JPanel panel;
-    private static JLabel currId,successLabel,currName;
-    private static JTextField userName, currIdField, currNameField, currAddressField, currPhoneNumberField,currPriceField,currLocationField;
+    private static JPanel panel,userSelect;
+    private static JLabel currId,successLabel,currName,currQuantity;
+    private static JTextField userName, currIdField, currNameField, currAddressField, currPhoneNumberField,currPriceField,currLocationField,currQuantityField;
     private static JPasswordField password;
     private static JButton executeOption;
     private static JRadioButton addRadio , updateRadio , deleteRadio,displayRadio;
     private static String currAddressValue,currLocationValue, currPhoneNumberValue,currNameValue;
-    private static Integer currPriceValue,currIdValue;
+    private static Integer currPriceValue,currIdValue,currQuantityValue;
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -128,10 +128,10 @@ public class MySqlDMLCommands implements ActionListener{
             this.connectionName = connectionName;
             this.connectionPassword = connectionPassword;
         }
-        private void add(int id,String productname,int price,String location) throws SQLException {
+        private void add(int id,String productName,int price,String location) throws SQLException {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock", connectionName, connectionPassword);
             Statement stmt = con.createStatement();
-            String insert = "INSERT INTO PRODUCT VALUES("+id+",'"+productname+"',"+price+",'"+location+"')";
+            String insert = "INSERT INTO PRODUCT VALUES("+id+",'"+productName+"',"+price+",'"+location+"')";
             stmt.execute(insert);
             con.close();
             System.out.println("Successfully Inserted product data with id:"+id);
@@ -172,6 +172,7 @@ public class MySqlDMLCommands implements ActionListener{
     public static void updateUser(String userName){
 
         frame.remove(panel);
+        frame.remove(userSelect);
 
         JPanel userPanel = new JPanel();
         userPanel.setLayout(null);
@@ -213,8 +214,8 @@ public class MySqlDMLCommands implements ActionListener{
         currAddressField.setBounds(280,110,150,30);
         userPanel.add(currAddressField);
 
-        JLabel currPhno = new JLabel("Enter Phone Number");
-        currPhno.setBounds(130,140,150,30);
+        JLabel currPhoneNumber = new JLabel("Enter Phone Number");
+        currPhoneNumber.setBounds(130,140,150,30);
 
         currPhoneNumberField = new JTextField(100);
         currPhoneNumberField.setBounds(280,140,150,30);
@@ -267,7 +268,7 @@ public class MySqlDMLCommands implements ActionListener{
         userPanel.add(currId);
         userPanel.add(currName);
         userPanel.add(currAddress);
-        userPanel.add(currPhno);
+        userPanel.add(currPhoneNumber);
 
         userPanel.add(addRadio);
         userPanel.add(updateRadio);
@@ -281,6 +282,7 @@ public class MySqlDMLCommands implements ActionListener{
     private static void manageProduct(){
 
         frame.remove(panel);
+        frame.remove(userSelect);
 
 
         JPanel adminPanel = new JPanel();
@@ -382,6 +384,144 @@ public class MySqlDMLCommands implements ActionListener{
         frame.setVisible(true);
     }
 
+    public static void orderOrUpdateProfile(String usernameText){
+        frame.remove(panel);
+
+        userSelect = new JPanel();
+        userSelect.setLayout(null);
+
+        JLabel welcomeUser = new JLabel("Welcome "+usernameText+" !");
+        welcomeUser.setBounds(10,20,180,25);
+        userSelect.add(welcomeUser);
+
+        JLabel selectionLabel = new JLabel("Select any one of the following");
+        selectionLabel.setBounds(10,50,180,25);
+        userSelect.add(selectionLabel);
+
+        JRadioButton updateProfile = new JRadioButton("Update user details");
+        updateProfile.setBounds(10,80,200,30);
+
+        JRadioButton orderProduct = new JRadioButton("Order a product");
+        orderProduct.setBounds(10,110,200,30);
+
+        ButtonGroup bg=new ButtonGroup();
+        bg.add(updateProfile);
+        bg.add(orderProduct);
+
+        executeOption = new JButton("Execute !");
+        executeOption.setBounds(135,250,180,30);
+        executeOption.addActionListener(e -> {
+
+            if(updateProfile.isSelected()){
+                System.out.println("Updating the user");
+                updateUser(usernameText);
+            }else if(orderProduct.isSelected()){
+                System.out.println("Ordering a product");
+                orderProduct(usernameText);
+            }
+        });
+
+        userSelect.add(updateProfile);
+        userSelect.add(orderProduct);
+        userSelect.add(executeOption);
+
+        frame.add(userSelect);
+        frame.setVisible(true);
+    }
+
+    public static void orderProduct(String userName){
+
+        frame.remove(panel);
+        frame.remove(userSelect);
+        frame.setSize(650,350);
+
+        JPanel orderPanel = new JPanel();
+        orderPanel.setLayout(null);
+
+        JLabel welcomeUser = new JLabel("Welcome " + userName);
+        welcomeUser.setBounds(10,20,180,25);
+        orderPanel.add(welcomeUser);
+
+        JRadioButton placeRadio = new JRadioButton("Place Order !");
+        placeRadio.setBounds(10,50,100,30);
+
+        JRadioButton cancelRadio = new JRadioButton("Cancel an order of a product !");
+        cancelRadio.setBounds(10,80,200,30);
+
+        JRadioButton displayRadio=new JRadioButton("Display the orders made");
+        displayRadio.setBounds(10,110,200,30);
+
+        currId = new JLabel("Enter Id");
+        currId.setBounds(235,50,150,30);
+
+        currIdField = new JTextField(100);
+        currIdField.setBounds(450,50,150,30);
+        orderPanel.add(currIdField);
+
+        currName = new JLabel("Enter Product/Item name");
+        currName.setBounds(235,80,250,30);
+
+        currNameField = new JTextField(100);
+        currNameField.setBounds(450,80,150,30);
+        orderPanel.add(currNameField);
+
+        currQuantity = new JLabel("Enter quantity you want to order");
+        currQuantity.setBounds(235,110,200,30);
+
+        currQuantityField = new JTextField(100);
+        currQuantityField.setBounds(450,110,150,30);
+        orderPanel.add(currQuantityField);
+
+        ButtonGroup bg=new ButtonGroup();
+        bg.add(placeRadio);
+        bg.add(cancelRadio);
+        bg.add(displayRadio);
+
+        executeOption=new JButton("Execute !");
+        executeOption.setBounds(230,250,180,30);
+        executeOption.addActionListener(e -> {
+            currIdValue = Integer.valueOf(currIdField.getText());
+            currNameValue = currNameField.getText();
+            currQuantityValue = Integer.valueOf(currQuantityField.getText());
+
+            Order order = new Order(connectionName,connectionPassword);
+            if(placeRadio.isSelected()){
+                try {
+                    order.place(currQuantityValue,currNameValue);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                System.out.println("User Data Added! "+currIdValue+" , "+currNameValue+" , "+currQuantityValue);
+            }else if(cancelRadio.isSelected()){
+                try {
+                    order.cancel(currIdValue);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                System.out.println("User Data Updated! "+currIdValue+" , "+currNameValue+" , "+currQuantityValue);
+            }else if(displayRadio.isSelected()){
+                try {
+                    order.display();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        orderPanel.add(currId);
+        orderPanel.add(currName);
+        orderPanel.add(currQuantity);
+
+
+        orderPanel.add(placeRadio);
+        orderPanel.add(cancelRadio);
+        orderPanel.add(displayRadio);
+        orderPanel.add(executeOption);
+
+        frame.add(orderPanel);
+        frame.setVisible(true);
+    }
+
     public static void main(String[] args) throws SQLException {
 
         frame = new JFrame("Stock Maintenance");
@@ -422,7 +562,7 @@ public class MySqlDMLCommands implements ActionListener{
             } else {
                 successLabel.setText("User Logged in!");
                 System.out.println("User Logged in!");
-                updateUser(usernameText);
+                orderOrUpdateProfile(usernameText);
             }
         });
         panel.add(loginButton);
