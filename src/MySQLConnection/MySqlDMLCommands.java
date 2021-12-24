@@ -218,9 +218,9 @@ public class MySqlDMLCommands implements ActionListener{
 
         displayRadio=new JRadioButton("Display");
         displayRadio.setBounds(10,140,100,30);
-        deleteRadio.setBackground(black);
-        deleteRadio.setForeground(white);
-        deleteRadio.setFocusPainted(false);
+        displayRadio.setBackground(black);
+        displayRadio.setForeground(white);
+        displayRadio.setFocusPainted(false);
 
         currId = new JLabel("Enter Id");
         currId.setBounds(130,50,150,30);
@@ -266,11 +266,14 @@ public class MySqlDMLCommands implements ActionListener{
         executeOption.setForeground(black);
         executeOption.setFocusPainted(false);
         executeOption.addActionListener(e -> {
+
             currIdValue = Integer.valueOf(currIdField.getText());
             currNameValue = currNameField.getText();
             currAddressValue = currAddressField.getText();
             currPhoneNumberValue = currPhoneNumberField.getText();
+
             Customer customer = new Customer(connectionName,connectionPassword);
+
             if(addRadio.isSelected()){
                 try {
                     customer.insert(currIdValue,currNameValue,currAddressValue, currPhoneNumberValue);
@@ -390,6 +393,7 @@ public class MySqlDMLCommands implements ActionListener{
         executeOption.setForeground(black);
         executeOption.setFocusPainted(false);
         executeOption.addActionListener(e -> {
+
             currIdValue = Integer.valueOf(currIdField.getText());
             currNameValue = currNameField.getText();
             currPriceValue = Integer.valueOf(currPriceField.getText());
