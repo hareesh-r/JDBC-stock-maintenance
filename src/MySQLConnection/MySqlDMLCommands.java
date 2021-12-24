@@ -1,5 +1,7 @@
 package MySQLConnection;
 import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -12,13 +14,14 @@ public class MySqlDMLCommands implements ActionListener{
     private static final String connectionPassword = "password";
     private static JFrame frame;
     private static JPanel panel,userSelect;
-    private static JLabel currId,successLabel,currName,currQuantity;
+    private static JLabel currId,currName,currQuantity;
     private static JTextField userName, currIdField, currNameField, currAddressField, currPhoneNumberField,currPriceField,currLocationField,currQuantityField;
     private static JPasswordField password;
     private static JButton executeOption;
     private static JRadioButton addRadio , updateRadio , deleteRadio,displayRadio;
     private static String currAddressValue,currLocationValue, currPhoneNumberValue,currNameValue;
     private static Integer currPriceValue,currIdValue,currQuantityValue;
+    private static Color black = new Color(0,0,0),white = new Color(255,255,255),green = new Color(132, 224, 158);
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -154,21 +157,6 @@ public class MySqlDMLCommands implements ActionListener{
         }
     }
 
-    public static class Invoice {
-
-        String connectionName,connectionPassword;
-
-        Invoice(String connectionName,String connectionPassword){
-            this.connectionName = connectionName;
-            this.connectionPassword = connectionPassword;
-        }
-
-        private void generate(int id){
-
-        }
-
-    }
-
     public static void updateUser(String userName){
 
         frame.remove(panel);
@@ -229,6 +217,9 @@ public class MySqlDMLCommands implements ActionListener{
 
         executeOption=new JButton("Execute !");
         executeOption.setBounds(135,250,180,30);
+        executeOption.setBackground(green);
+        executeOption.setForeground(black);
+        executeOption.setFocusPainted(false);
         executeOption.addActionListener(e -> {
             currIdValue = Integer.valueOf(currIdField.getText());
             currNameValue = currNameField.getText();
@@ -337,6 +328,9 @@ public class MySqlDMLCommands implements ActionListener{
 
         executeOption=new JButton("Execute !");
         executeOption.setBounds(135,250,180,30);
+        executeOption.setBackground(green);
+        executeOption.setForeground(black);
+        executeOption.setFocusPainted(false);
         executeOption.addActionListener(e -> {
             currIdValue = Integer.valueOf(currIdField.getText());
             currNameValue = currNameField.getText();
@@ -379,7 +373,6 @@ public class MySqlDMLCommands implements ActionListener{
         adminPanel.add(deleteRadio);
         adminPanel.add(executeOption);
 
-
         frame.add(adminPanel);
         frame.setVisible(true);
     }
@@ -389,20 +382,29 @@ public class MySqlDMLCommands implements ActionListener{
 
         userSelect = new JPanel();
         userSelect.setLayout(null);
+        userSelect.setBackground(black);
 
         JLabel welcomeUser = new JLabel("Welcome "+usernameText+" !");
         welcomeUser.setBounds(10,20,180,25);
+        welcomeUser.setForeground(white);
         userSelect.add(welcomeUser);
 
         JLabel selectionLabel = new JLabel("Select any one of the following");
         selectionLabel.setBounds(10,50,180,25);
+        selectionLabel.setForeground(white);
         userSelect.add(selectionLabel);
 
         JRadioButton updateProfile = new JRadioButton("Update user details");
         updateProfile.setBounds(10,80,200,30);
+        updateProfile.setBackground(black);
+        updateProfile.setForeground(white);
+        updateProfile.setFocusPainted(false);
 
         JRadioButton orderProduct = new JRadioButton("Order a product");
         orderProduct.setBounds(10,110,200,30);
+        orderProduct.setBackground(black);
+        orderProduct.setForeground(white);
+        orderProduct.setFocusPainted(false);
 
         ButtonGroup bg=new ButtonGroup();
         bg.add(updateProfile);
@@ -410,6 +412,9 @@ public class MySqlDMLCommands implements ActionListener{
 
         executeOption = new JButton("Execute !");
         executeOption.setBounds(135,250,180,30);
+        executeOption.setBackground(green);
+        executeOption.setForeground(black);
+        executeOption.setFocusPainted(false);
         executeOption.addActionListener(e -> {
 
             if(updateProfile.isSelected()){
@@ -437,22 +442,34 @@ public class MySqlDMLCommands implements ActionListener{
 
         JPanel orderPanel = new JPanel();
         orderPanel.setLayout(null);
+        orderPanel.setBackground(black);
 
         JLabel welcomeUser = new JLabel("Welcome " + userName);
         welcomeUser.setBounds(10,20,180,25);
+        welcomeUser.setForeground(white);
         orderPanel.add(welcomeUser);
 
         JRadioButton placeRadio = new JRadioButton("Place Order !");
         placeRadio.setBounds(10,50,100,30);
+        placeRadio.setBackground(black);
+        placeRadio.setForeground(white);
+        placeRadio.setFocusPainted(false);
 
         JRadioButton cancelRadio = new JRadioButton("Cancel an order of a product !");
         cancelRadio.setBounds(10,80,200,30);
+        cancelRadio.setBackground(black);
+        cancelRadio.setForeground(white);
+        cancelRadio.setFocusPainted(false);
 
         JRadioButton displayRadio=new JRadioButton("Display the orders made");
         displayRadio.setBounds(10,110,200,30);
+        displayRadio.setBackground(black);
+        displayRadio.setForeground(white);
+        displayRadio.setFocusPainted(false);
 
         currId = new JLabel("Enter Id");
         currId.setBounds(235,50,150,30);
+        currId.setForeground(white);
 
         currIdField = new JTextField(100);
         currIdField.setBounds(450,50,150,30);
@@ -460,6 +477,7 @@ public class MySqlDMLCommands implements ActionListener{
 
         currName = new JLabel("Enter Product/Item name");
         currName.setBounds(235,80,250,30);
+        currName.setForeground(white);
 
         currNameField = new JTextField(100);
         currNameField.setBounds(450,80,150,30);
@@ -467,6 +485,7 @@ public class MySqlDMLCommands implements ActionListener{
 
         currQuantity = new JLabel("Enter quantity you want to order");
         currQuantity.setBounds(235,110,200,30);
+        currQuantity.setForeground(white);
 
         currQuantityField = new JTextField(100);
         currQuantityField.setBounds(450,110,150,30);
@@ -479,6 +498,9 @@ public class MySqlDMLCommands implements ActionListener{
 
         executeOption=new JButton("Execute !");
         executeOption.setBounds(230,250,180,30);
+        executeOption.setBackground(green);
+        executeOption.setForeground(black);
+        executeOption.setFocusPainted(false);
         executeOption.addActionListener(e -> {
             currIdValue = Integer.valueOf(currIdField.getText());
             currNameValue = currNameField.getText();
@@ -528,12 +550,15 @@ public class MySqlDMLCommands implements ActionListener{
         panel = new JPanel();
         frame.setSize(470,350);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ImageIcon img = new ImageIcon("src/img/logo.png");
+        frame.setIconImage(img.getImage());
         frame.add(panel);
-
+        panel.setBackground(black);
         panel.setLayout(null);
 
         JLabel userLabel = new JLabel("Username");
         userLabel.setBounds(10,20,80,25);
+        userLabel.setForeground(white);
         panel.add(userLabel);
 
         userName = new JTextField(100);
@@ -542,6 +567,7 @@ public class MySqlDMLCommands implements ActionListener{
 
         JLabel passwordLabel = new JLabel("Password");
         passwordLabel.setBounds(10,50,80,25);
+        passwordLabel.setForeground(white);
         panel.add(passwordLabel);
 
         password = new JPasswordField(100);
@@ -550,35 +576,23 @@ public class MySqlDMLCommands implements ActionListener{
 
         JButton loginButton = new JButton("Login");
         loginButton.setBounds(170,80,90,25);
+        loginButton.isDefaultButton();
+        loginButton.setBackground(green);
+        loginButton.setForeground(black);
 
         loginButton.addActionListener(new MySqlDMLCommands());
         loginButton.addActionListener(e -> {
             String usernameText = userName.getText();
             String passwordText = password.getText();
             if (usernameText.equals("hareesh") && passwordText.equals("admin")) {
-                successLabel.setText("Admin Logged in!");
                 System.out.println("Admin Logged in!");
                 manageProduct();
             } else {
-                successLabel.setText("User Logged in!");
                 System.out.println("User Logged in!");
                 orderOrUpdateProfile(usernameText);
             }
         });
         panel.add(loginButton);
-
-        successLabel = new JLabel("");
-        successLabel.setBounds(10,100,180,25);
-        panel.add(successLabel);
-
         frame.setVisible(true);
-
-//        Order order = new Order(connectionName,connectionPassword);
-//        order.place(4,"Bottles");
-//        order.place(3,"Phones");
-//        order.place(7,"Laptops");
-//        order.cancel(4);
-//        order.display();
-
     }
 }
